@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: vidption-bot
+    env: python
+    region: oregon
+    buildCommand: pip install -r requirements.txt
+    startCommand: python bot.py
+    envVars:
+      - key: VIDPTION_BOT_TOKEN
+        sync: false
+      - key: VIDPTION_BOT_USERNAME
+        sync: false
+      - key: WEBHOOK_URL
+        sync: false
+      - key: PORT
+        value: "8080"
+      - key: PYTHON_VERSION
+        value: "3.11.0"
+    autoDeploy: true
