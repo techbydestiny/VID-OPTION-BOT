@@ -370,20 +370,16 @@ def main():
     # Add error handler
     app.add_error_handler(error_handler)
 
-    # Decide between webhook and polling
-    if WEBHOOK_URL:
-        # Webhook mode for production (Render)
-        logger.info(f"Starting Vidption in webhook mode on port {PORT}...")
-        app.run_webhook(
-            listen="0.0.0.0",
-            port=PORT,
-            webhook_url=f"{WEBHOOK_URL}/webhook",
-            drop_pending_updates=True
-        )
-    else:
-        # Polling mode for development
-        logger.info("Starting Vidption in polling mode...")
-        app.run_polling(poll_interval=3, drop_pending_updates=True)
+    # Start webhook
+    logger.info(f"Starting webhook on port {PORT}...")
+    app.run_webhook(
+        listen="0.0.0.0",
+        port=PORT,
+        url_path="webhook",  # This MUST match the path in WEBHOOK_URL
+        webhook_url=f"{WEBHOOK_URL}/webhook",
+        drop_pending_updates=True
+    )
 
 if __name__ == '__main__':
     main()
+
