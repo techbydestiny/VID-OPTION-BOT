@@ -350,10 +350,10 @@ async def error_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
         except:
             pass
-
 def main():
     """Main function to run the bot"""
     logger.info("Starting Vidption Bot...")
+    print("Starting Vidption Bot...")
     
     # Create application
     app = Application.builder().token(TOKEN).build()
@@ -370,16 +370,14 @@ def main():
     # Add error handler
     app.add_error_handler(error_handler)
 
-    # Start webhook
-    logger.info(f"Starting webhook on port {PORT}...")
-    app.run_webhook(
-        listen="0.0.0.0",
-        port=PORT,
-        url_path="webhook",  # This MUST match the path in WEBHOOK_URL
-        webhook_url=f"{WEBHOOK_URL}/webhook",
-        drop_pending_updates=True
+    # Use polling instead of webhooks
+    logger.info("Starting polling mode...")
+    print("Bot is now listening for messages...")
+    app.run_polling(
+        poll_interval=1.0,
+        drop_pending_updates=True,
+        allowed_updates=Update.ALL_TYPES
     )
 
 if __name__ == '__main__':
     main()
-
